@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1566866181 source:c:\users\acquisto\desktop\trabajo_practico_1\biblioteca.c
+	<stdio.h>
+	<stdlib.h>
+	"Biblioteca.h"
+
+1566866471 c:\users\acquisto\desktop\trabajo_practico_1\biblioteca.h
+
+1566866669 source:c:\users\acquisto\desktop\trabajo_practico_1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Biblioteca.h"
+
+1566866181 source:c:\users\acquisto\desktop\tp_laboratorio_1\trabajo_practico_1\biblioteca.c
+	<stdio.h>
+	<stdlib.h>
+	"Biblioteca.h"
+
+1566866471 c:\users\acquisto\desktop\tp_laboratorio_1\trabajo_practico_1\biblioteca.h
+
+1566868377 source:c:\users\acquisto\desktop\tp_laboratorio_1\trabajo_practico_1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Biblioteca.h"
+
