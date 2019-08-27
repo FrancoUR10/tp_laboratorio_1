@@ -45,7 +45,7 @@ int sacarFactorial(int operando)
     int resultadoFactoreo;
     if(operando < 0)
     {
-        return 0;
+        resultadoFactoreo=0;
     }
     else if(operando == 0 || operando == 1)
     {
