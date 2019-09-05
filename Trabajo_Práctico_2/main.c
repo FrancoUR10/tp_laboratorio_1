@@ -9,8 +9,6 @@ int main()
     char continuarMenu='s';
 
     eEmpleado arrayEmpleados[MAX];
-    //eEmpleado auxEmpleado;
-
 
     inicializarId(arrayEmpleados,MAX);
     do
@@ -22,10 +20,10 @@ int main()
                 darDeAlta(arrayEmpleados,MAX);
                 break;
             case 2:
-                printf("\nSe ha dado de baja\n");
+                darDeBaja(arrayEmpleados,MAX);
                 break;
             case 3:
-                printf("\nSe ha modificado\n");
+                modificarArray(arrayEmpleados,MAX);
                 break;
             case 4:
                 mostrarArray(arrayEmpleados,MAX);
@@ -34,7 +32,7 @@ int main()
                 continuarMenu='n';
                 break;
             default:
-                printf("\nOpcion ingresada no valida\n");
+                printf("\nOpcion ingresada no valida\a\n");
         }
         system("pause");
         system("cls");
