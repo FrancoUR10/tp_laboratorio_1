@@ -169,4 +169,13 @@ int buscarEstadoDelArray(eEmpleado unArray[],int tam,int estadoDelIndice);
  */
 void modificarArray(eEmpleado unArray[],int tam);
 
+/** \brief Saca el promedio del sueldo de cada empleado que se encuentre dado de alta
+ *
+ * \param unArray[] eEmpleado El array con los datos de los empleados
+ * \param tam int La longitud del array
+ * \return void No retorna nada
+ *
+ */
+void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam);
+
 #endif // ARRAYEMPLOYEES_H_INCLUDED

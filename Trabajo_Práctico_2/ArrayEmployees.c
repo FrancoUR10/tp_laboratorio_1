@@ -138,6 +138,7 @@ void mostrarArray(eEmpleado unArray[],int tam)
                 printf("\nNombre: %s--Apellido: %s--Salario: %.2f--Sector: %d--Id: %d\n",unArray[i].nombre,unArray[i].apellido,unArray[i].salario,unArray[i].sector,unArray[i].id);
             }
         }
+        mostrarPromedioDeSalarios(unArray,tam);
     }
 }
 void darDeAlta(eEmpleado unArray[],int tam)
@@ -310,4 +311,21 @@ void modificarArray(eEmpleado unArray[],int tam)
             printf("\nSe ha modificado el id %d\n",auxIdInt);
         }
     }
+}
+void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam)
+{
+    float acumuladorDeSalarios=0;
+    int contadorDeAltas=0;
+    float promedioDeSalarios=0;
+    int i;
+    for(i=0;i<tam;i++)
+    {
+        if(unArray[i].estaVacio==0)
+        {
+            contadorDeAltas++;
+            acumuladorDeSalarios+=unArray[i].salario;
+        }
+    }
+        promedioDeSalarios=(float)acumuladorDeSalarios/contadorDeAltas;
+        printf("\nEl promedio del salario de los empleados es: %.2f\n",promedioDeSalarios);
 }
