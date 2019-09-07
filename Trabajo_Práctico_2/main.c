@@ -9,8 +9,11 @@ int main()
     char continuarMenu='s';
 
     eEmpleado arrayEmpleados[MAX];
-
     inicializarId(arrayEmpleados,MAX);
+
+    // Hardcodear un solo dato como dado de alta:
+    //harcodearPrimerPosicionLibre(arrayEmpleados,MAX,420,"Franco","Acquisto",50.2,5);
+
     do
     {
         opcionMenu=pedirMenu("1-ALTAS\n2-BAJAS\n3-MODIFICAR\n4-INFORMAR\n5-SALIR\n\nIngrese una opcion: ");
@@ -26,6 +29,7 @@ int main()
                 modificarArray(arrayEmpleados,MAX);
                 break;
             case 4:
+                ordenarListaDeEmpleados(arrayEmpleados,MAX,1);
                 mostrarArray(arrayEmpleados,MAX);
                 break;
             case 5:
@@ -38,10 +42,6 @@ int main()
         system("cls");
     }
     while(continuarMenu=='s');
-
-
-
-
 
 
     return 0;

@@ -160,7 +160,7 @@ void darDeBaja(eEmpleado unArray[],int tam);
  */
 int buscarEstadoDelArray(eEmpleado unArray[],int tam,int estadoDelIndice);
 
-/** \brief Pide el id de un empleado y luego pide los datos a modificar
+/** \brief Pide el id de un empleado y luego permite modificar un dato seleccionado
  *
  * \param unArray[] eEmpleado El array con los datos a modificar
  * \param tam int La longitud del array
@@ -177,5 +177,57 @@ void modificarArray(eEmpleado unArray[],int tam);
  *
  */
 void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam);
+
+/** \brief Ordena los elementos de un array por sector y apellido de menor a mayor
+ *
+ * \param unArray[] eEmpleado El array con los elementos a ordenar
+ * \param tam int La longitud del array
+ * \return void No retorna nada
+ *
+ */
+void ordenarArrayAscendiente(eEmpleado unArray[],int tam);
+
+/** \brief Ordena los elementos de un array por sector y apellido de mayor a menor
+ *
+ * \param unArray[] eEmpleado El array con los elementos a ordenar
+ * \param tam int La longitud del array
+ * \return void No retorna nada
+ *
+ */
+void ordenarArrayDescendiente(eEmpleado unArray[],int tam);
+
+/** \brief Ordena una lista por sector y apellido de forma ascendiente o descendiente segun el parametro que reciba
+ *
+ * \param unArray[] eEmpleado El array con los datos a ordenar
+ * \param tam int La longitud del array
+ * \param opcionTipoDeOrden int Para ordenar de forma ascendiente [1], de forma descendiente [0]
+ * \return void No retorna nada
+ *
+ */
+void ordenarListaDeEmpleados(eEmpleado unArray[],int tam,int opcionTipoDeOrden);
+
+/** \brief Pregunta por un solo dato a modificar y realiza la modificacion del mismo
+ *
+ * \param unArray[] eEmpleado El array con un dato a modificar
+ * \param tam int La longitud del array
+ * \param indice int La posicion del array en donde se modificara un dato
+ * \return void No retorna nada
+ *
+ */
+void menuModificarDatos(eEmpleado unArray[],int tam,int indice);
+
+/** \brief Busca una sola posicion libre en el array y harcodea los datos ingresados como parametros
+ *
+ * \param unArray[] eEmpleado El array con una posicion libre en donde harcodear los datos
+ * \param tam int La longitud del array
+ * \param parametroId int El id a guardar en el array
+ * \param parametroNombre[] char El nombre a guardar en el array
+ * \param parametroApellido[] char El apellido a guardar en el array
+ * \param parametroSalario float El salario a guardar en el array
+ * \param parametroSector int El sector a guardar en el array
+ * \return void No retorna nada
+ *
+ */
+void harcodearPrimerPosicionLibre(eEmpleado unArray[],int tam,int parametroId,char parametroNombre[],char parametroApellido[],float parametroSalario,int parametroSector);
 
 #endif // ARRAYEMPLOYEES_H_INCLUDED
