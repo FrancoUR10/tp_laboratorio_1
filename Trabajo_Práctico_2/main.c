@@ -8,12 +8,9 @@ int main()
     int opcionMenu;
     char continuarMenu='s';
 
-    eEmpleado arrayEmpleados[MAX];
+    eEmployee arrayEmpleados[MAX];
     int contDeAltas=1;
-    inicializarId(arrayEmpleados,MAX);
-
-    // Hardcodear un solo dato como dado de alta:
-    //harcodearPrimerPosicionLibre(arrayEmpleados,MAX,420,"Franco","Acquisto",50.2,5);
+    initEmployees(arrayEmpleados,MAX);
 
     do
     {
@@ -24,14 +21,14 @@ int main()
                 darDeAlta(arrayEmpleados,MAX,&contDeAltas);
                 break;
             case 2:
-                darDeBaja(arrayEmpleados,MAX);
+                removeEmployee(arrayEmpleados,MAX);
                 break;
             case 3:
                 modificarArray(arrayEmpleados,MAX);
                 break;
             case 4:
-                ordenarListaDeEmpleados(arrayEmpleados,MAX,1);
-                mostrarArray(arrayEmpleados,MAX);
+                sortEmployees(arrayEmpleados,MAX,1);
+                printEmployees(arrayEmpleados,MAX);
                 break;
             case 5:
                 continuarMenu='n';

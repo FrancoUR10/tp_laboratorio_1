@@ -2,13 +2,13 @@
 #define ARRAYEMPLOYEES_H_INCLUDED
 typedef struct
 {
- int id;
- char nombre[50];
- char apellido[50];
- float salario;
- int sector;
- int estaVacio;
-} eEmpleado;
+    int id;
+    char name[51];
+    char lastName[51];
+    float salary;
+    int sector;
+    int isEmpty;
+} eEmployee;
 
 /** \brief Recibe una opcion del menu y lo retorna
  *
@@ -72,53 +72,53 @@ int getStringNumeros(char unArray[],char mensaje[],char mensajeErrorRango[],char
  */
 int getStringLetras(char unArray[],char mensaje[],char mensajeErrorRango[],char mensajeErrorLetras[],int min,int max);
 
-/** \brief Inicializa cada elemento del array como libre
+/** \brief Inicializa cada posicion del array como vacio
  *
- * \param unArray[] eEmpleado El array a ser inicializado
- * \param tam int La longitud del array
- * \return void No retorna nada
+ * \param list eEmployee* El puntero al array de empleados a inicializar
+ * \param len int La longitud del array
+ * \return int Si tiene un puntero nulo o una longitud invalida [-1] si no [0]
  *
  */
-void inicializarId(eEmpleado unArray[],int tam);
+int initEmployees(eEmployee* list, int len);
 
-/** \brief Busca un valor en cada elemento del array y retorna la posicion donde se encuentra
+/** \brief Busca el id de una posicion que se encuentre ocupada y retorna su indice
  *
- * \param unArray[] eEmpleado El array en donde realizar la busqueda
- * \param tam int La longitud del array
- * \param valor int El valor que se desea buscar
- * \param flagLugar int Para buscar solo en lugares libres [1] para ocupados [0]
- * \return int Si encontro el valor retorna el indice, si no [-1]
+ * \param list eEmployee* El puntero al array de empleados en donde realizar la busqueda
+ * \param len int La longitud del array
+ * \param id int El valor del id a buscar
+ * \return int Si tiene un puntero nulo, una longitud invalida o no encontro al empleado [-1] si no retorna el indice
  *
  */
-int buscarLugarLibre(eEmpleado unArray[],int tam,int valorId,int flagLugar);
+int findEmployeeById(eEmployee* list, int len,int id);
 
-/** \brief Muestra todos los elementos de un array que se encuentren ocupados
+/** \brief Muestra el contenido del array de empleados que se encuentren ocupados
  *
- * \param unArray[] eEmpleado El array con los elementos a mostrar
- * \param tam int La longitud del array a mostrar
- * \return void No retorna nada
+ * \param list eEmployee* El puntero al array de empleados a mostrar
+ * \param length int La longitud del array
+ * \return int Si el puntero es nulo, la longitud es invalida o no hay un lugar ocupado a mostrar [-1] si no [0]
  *
  */
-void mostrarArray(eEmpleado unArray[],int tam);
+int printEmployees(eEmployee* list, int length);
 
 /** \brief Pide los datos generales de la estructura y los guarda en un indice
  *
- * \param unArray[] eEmpleado El array que recibe los datos
+ * \param unArray[] eEmployee El array que recibe los datos
  * \param tam int La longitud del array
  * \param indice int El indice del array en donde se guardaran los datos
  * \return void No retorna nada
  *
  */
-void pedirDatos(eEmpleado unArray[],int tam,int indice);
+void pedirDatos(eEmployee unArray[],int tam,int indice);
 
 /** \brief Valida si hay un espacio libre y pide los datos para darlos de alta
  *
- * \param unArray[] eEmpleado El array en donde se daran de alta los datos
+ * \param unArray[] eEmployee El array en donde se daran de alta los datos
  * \param tam int La longitud del array
+ * \param contDadosDeAlta int* Un contador para generar el id de forma automatica
  * \return void No retorna nada
  *
  */
-void darDeAlta(eEmpleado unArray[],int tam,int* contDadosDeAlta);
+void darDeAlta(eEmployee unArray[],int tam,int* contDadosDeAlta);
 
 /** \brief valida si el caracter ingresado contiene solo numeros y menos de dos puntos, ademas del rango establecido
  *
@@ -141,93 +141,93 @@ int validarSoloNumerosFloat(char unArray[]);
  */
 int getStringNumerosFloat(char unArray[],char mensaje[],char mensajeErrorRango[],char mensajeErrorNumeros[],int min,int max);
 
-/** \brief Pide el id de un empleado y lo borra de forma logica
+/** \brief Pide el id de un empleado y lo borra de manera logica
  *
- * \param unArray[] eEmpleado El array en donde se daran de baja los datos
- * \param tam int La longitud del array
- * \return void No retorna nada
+ * \param list eEmployee* El puntero al array del empleado a borrar
+ * \param len int La longitud del array
+ * \return int Si el puntero es nulo, la longitud es invalida o si no encontro al empleado [-1] si lo encontro [0]
  *
  */
-void darDeBaja(eEmpleado unArray[],int tam);
+int removeEmployee(eEmployee* list, int len);
 
 /** \brief Recorre cada posicion del array buscando un lugar libre u ocupado y retorna su indice
  *
- * \param unArray[] eEmpleado El array en donde buscar un lugar libre u ocupado
+ * \param unArray[] eEmployee El array en donde buscar un lugar libre u ocupado
  * \param tam int La longitud del array
  * \param estadoDelIndice int El estado del indice que se quiere buscar, para ocupado[0] para libre[1]
  * \return int El indice del estado buscado, si no lo encontro [-1]
  *
  */
-int buscarEstadoDelArray(eEmpleado unArray[],int tam,int estadoDelIndice);
+int buscarEstadoDelArray(eEmployee unArray[],int tam,int estadoDelIndice);
 
 /** \brief Pide el id de un empleado y luego permite modificar un dato seleccionado
  *
- * \param unArray[] eEmpleado El array con los datos a modificar
+ * \param unArray[] eEmployee El array con los datos a modificar
  * \param tam int La longitud del array
  * \return void No retorna nada
  *
  */
-void modificarArray(eEmpleado unArray[],int tam);
+void modificarArray(eEmployee unArray[],int tam);
 
 /** \brief Saca el promedio del sueldo de cada empleado que se encuentre dado de alta
  *
- * \param unArray[] eEmpleado El array con los datos de los empleados
+ * \param unArray[] eEmployee El array con los datos de los empleados
  * \param tam int La longitud del array
  * \return void No retorna nada
  *
  */
-void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam);
+void mostrarPromedioDeSalarios(eEmployee unArray[],int tam);
 
 /** \brief Ordena los elementos de un array por sector y apellido de menor a mayor
  *
- * \param unArray[] eEmpleado El array con los elementos a ordenar
+ * \param unArray[] eEmployee El array con los elementos a ordenar
  * \param tam int La longitud del array
  * \return void No retorna nada
  *
  */
-void ordenarArrayAscendiente(eEmpleado unArray[],int tam);
+void ordenarArrayAscendiente(eEmployee unArray[],int tam);
 
 /** \brief Ordena los elementos de un array por sector y apellido de mayor a menor
  *
- * \param unArray[] eEmpleado El array con los elementos a ordenar
+ * \param unArray[] eEmployee El array con los elementos a ordenar
  * \param tam int La longitud del array
  * \return void No retorna nada
  *
  */
-void ordenarArrayDescendiente(eEmpleado unArray[],int tam);
+void ordenarArrayDescendiente(eEmployee unArray[],int tam);
 
-/** \brief Ordena una lista por sector y apellido de forma ascendiente o descendiente segun el parametro que reciba
+/** \brief Ordena los elementos por sector y por apellido
  *
- * \param unArray[] eEmpleado El array con los datos a ordenar
- * \param tam int La longitud del array
- * \param opcionTipoDeOrden int Para ordenar de forma ascendiente [1], de forma descendiente [0]
- * \return void No retorna nada
+ * \param list eEmployee* El puntero al array de empleados a ordenar
+ * \param len int La longitud del array
+ * \param order int El tipo de orden: Para ordenar ascendiente [1] Para descendiente [0]
+ * \return int Si el puntero es nulo o la longitud es invalida [-1] si se ordeno [0]
  *
  */
-void ordenarListaDeEmpleados(eEmpleado unArray[],int tam,int opcionTipoDeOrden);
+int sortEmployees(eEmployee* list, int len, int order);
 
 /** \brief Pregunta por un solo dato a modificar y realiza la modificacion del mismo
  *
- * \param unArray[] eEmpleado El array con un dato a modificar
+ * \param unArray[] eEmployee El array con un dato a modificar
  * \param tam int La longitud del array
  * \param indice int La posicion del array en donde se modificara un dato
  * \return void No retorna nada
  *
  */
-void menuModificarDatos(eEmpleado unArray[],int tam,int indice);
+void menuModificarDatos(eEmployee unArray[],int tam,int indice);
 
-/** \brief Busca una sola posicion libre en el array y harcodea los datos ingresados como parametros
+/** \brief Harcodea los datos ingresados como parametros en una posicion libre, generando un id automaticamente
  *
- * \param unArray[] eEmpleado El array con una posicion libre en donde harcodear los datos
- * \param tam int La longitud del array
- * \param parametroId int El id a guardar en el array
- * \param parametroNombre[] char El nombre a guardar en el array
- * \param parametroApellido[] char El apellido a guardar en el array
- * \param parametroSalario float El salario a guardar en el array
- * \param parametroSector int El sector a guardar en el array
- * \return void No retorna nada
+ * \param list eEmployee* El puntero al array de empleados a harcodear
+ * \param len int La longitud del array
+ * \param contId int* El contador para generar un id de forma automatica
+ * \param name[] char El nombre a harcodear
+ * \param lastName[] char El apellido a harcodear
+ * \param salary float El salario a harcodear
+ * \param sector int El sector a harcodear
+ * \return int Si el puntero es nulo, la longitud es invalida o no se encontro un lugar libre [-1] si no [0]
  *
  */
-void harcodearPrimerPosicionLibre(eEmpleado unArray[],int tam,int parametroId,char parametroNombre[],char parametroApellido[],float parametroSalario,int parametroSector);
+int addEmployee(eEmployee* list, int len, int* contId, char name[],char lastName[],float salary,int sector);
 
 #endif // ARRAYEMPLOYEES_H_INCLUDED

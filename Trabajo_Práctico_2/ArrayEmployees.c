@@ -91,28 +91,34 @@ int getStringLetras(char unArray[],char mensaje[],char mensajeErrorRango[],char 
     retorno=1;
     return retorno;
 }
-void inicializarId(eEmpleado unArray[],int tam)
-{
-    int i;
-    for(i=0;i<tam;i++)
-    {
-        unArray[i].id=-1;
-        strcpy(unArray[i].nombre,"VACIO");
-        strcpy(unArray[i].apellido,"VACIO");
-        unArray[i].salario=0;
-        unArray[i].sector=-1;
-        unArray[i].estaVacio=1;
-    }
-}
-int buscarLugarLibre(eEmpleado unArray[],int tam,int valorId,int flagLugar)
+int initEmployees(eEmployee* list, int len)
 {
     int retorno=-1;
     int i;
-    for(i=0;i<tam;i++)
+    if((list != NULL) && (len > 0))
     {
-        if(unArray[i].estaVacio==flagLugar)
+        for(i=0;i<len;i++)
         {
-            if(unArray[i].id==valorId)
+            list[i].id=-1;
+            strcpy(list[i].name,"VACIO");
+            strcpy(list[i].lastName,"VACIO");
+            list[i].salary=0;
+            list[i].sector=-1;
+            list[i].isEmpty=1;
+        }
+        retorno=0;
+    }
+    return retorno;
+}
+int findEmployeeById(eEmployee* list, int len,int id)
+{
+    int retorno=-1;
+    int i;
+    if((list != NULL) && (len > 0))
+    {
+        for(i=0;i<len;i++)
+        {
+            if((list[i].isEmpty==0) && (list[i].id==id))
             {
                 retorno=i;
             }
@@ -120,7 +126,34 @@ int buscarLugarLibre(eEmpleado unArray[],int tam,int valorId,int flagLugar)
     }
     return retorno;
 }
-void mostrarArray(eEmpleado unArray[],int tam)
+int printEmployees(eEmployee* list, int length)
+{
+    int indiceLibre;
+    int i;
+    int retorno=-1;
+    if((list != NULL) && (length > 0))
+    {
+        indiceLibre=buscarEstadoDelArray(list,length,0);
+        if(indiceLibre == -1)
+        {
+            printf("\nTodos los lugares se encuentran libres\n");
+        }
+        else
+        {
+            for(i=0;i<length;i++)
+            {
+                if(list[i].isEmpty == 0)
+                {
+                    printf("\nNombre: %s  Apellido: %s  Salario: %.2f  Sector: %d  Id: %d\n",list[i].name,list[i].lastName,list[i].salary,list[i].sector,list[i].id);
+                }
+            }
+            mostrarPromedioDeSalarios(list,length);
+            retorno=0;
+        }
+    }
+    return retorno;
+}
+void mostrarArray(eEmployee unArray[],int tam)
 {
     int indiceLibre;
     int i;
@@ -133,19 +166,19 @@ void mostrarArray(eEmpleado unArray[],int tam)
     {
         for(i=0;i<tam;i++)
         {
-            if(unArray[i].estaVacio == 0)
+            if(unArray[i].isEmpty == 0)
             {
-                printf("\nNombre: %s  Apellido: %s  Salario: %.2f  Sector: %d  Id: %d\n",unArray[i].nombre,unArray[i].apellido,unArray[i].salario,unArray[i].sector,unArray[i].id);
+                printf("\nNombre: %s  Apellido: %s  Salario: %.2f  Sector: %d  Id: %d\n",unArray[i].name,unArray[i].lastName,unArray[i].salary,unArray[i].sector,unArray[i].id);
             }
         }
         mostrarPromedioDeSalarios(unArray,tam);
     }
 }
-void darDeAlta(eEmpleado unArray[],int tam,int* contDadosDeAlta)
+void darDeAlta(eEmployee unArray[],int tam,int* contDadosDeAlta)
 {
     int auxIdInt;
     int indiceLibre;
-    indiceLibre=buscarLugarLibre(unArray,tam,-1,1);
+    indiceLibre=buscarEstadoDelArray(unArray,tam,1);
     if(indiceLibre == -1)
     {
         printf("\nNo quedan lugares libres\n");
@@ -156,13 +189,13 @@ void darDeAlta(eEmpleado unArray[],int tam,int* contDadosDeAlta)
 
         pedirDatos(unArray,tam,indiceLibre);
         unArray[indiceLibre].id=auxIdInt;
-        unArray[indiceLibre].estaVacio=0;
+        unArray[indiceLibre].isEmpty=0;
         printf("\nSe ha dado de alta al id: %d\n",auxIdInt);
         *contDadosDeAlta=auxIdInt+1;
     }
 
 }
-void pedirDatos(eEmpleado unArray[],int tam,int indice)
+void pedirDatos(eEmployee unArray[],int tam,int indice)
 {
     char auxNombreStr[256];
     char auxApellidoStr[256];
@@ -179,9 +212,9 @@ void pedirDatos(eEmpleado unArray[],int tam,int indice)
     getStringNumeros(auxSectorStr,"\nIngrese el sector del empleado: ","\nRango valido entre 1 y 10\a\n","\nSolo se permiten numeros\a\n",1,10);
     auxSectorInt=atoi(auxSectorStr);
 
-    strcpy(unArray[indice].nombre,auxNombreStr);
-    strcpy(unArray[indice].apellido,auxApellidoStr);
-    unArray[indice].salario=auxSalarioFloat;
+    strcpy(unArray[indice].name,auxNombreStr);
+    strcpy(unArray[indice].lastName,auxApellidoStr);
+    unArray[indice].salary=auxSalarioFloat;
     unArray[indice].sector=auxSectorInt;
 }
 int validarSoloNumerosFloat(char unArray[])
@@ -226,50 +259,53 @@ int getStringNumerosFloat(char unArray[],char mensaje[],char mensajeErrorRango[]
     retorno=1;
     return retorno;
 }
-void darDeBaja(eEmpleado unArray[],int tam)
+int removeEmployee(eEmployee* list, int len)
 {
     char auxIdStr[256];
     int auxIdInt;
     int indiceLibre;
     int indiceResultadoDeBusqueda;
-
-    indiceLibre=buscarEstadoDelArray(unArray,tam,0);
-    if(indiceLibre == -1)
+    int retorno=-1;
+    if((list != NULL) && (len > 0))
     {
-        printf("\nTodos los lugares se encuentran libres\n");
-    }
-    else
-    {
-        getStringNumeros(auxIdStr,"\nIngrese el id del empleado: ","\nRango valido entre 1 y 20\a\n","\nSolo se permiten numeros\a\n",1,20);
-        auxIdInt=atoi(auxIdStr);
-        indiceResultadoDeBusqueda=buscarLugarLibre(unArray,tam,auxIdInt,0);
-        if(indiceResultadoDeBusqueda == -1)
+        indiceLibre=buscarEstadoDelArray(list,len,0);
+        if(indiceLibre == -1)
         {
-            printf("\nNo existe el id ingresado\n");
+            printf("\nTodos los lugares se encuentran libres\n");
         }
         else
         {
-            unArray[indiceResultadoDeBusqueda].estaVacio=1;
-            unArray[indiceResultadoDeBusqueda].id=-1;
-            printf("\nSe ha dado de baja al id %d\n",auxIdInt);
+            getStringNumeros(auxIdStr,"\nIngrese el id del empleado: ","\nRango valido entre 1 y 20\a\n","\nSolo se permiten numeros\a\n",1,20);
+            auxIdInt=atoi(auxIdStr);
+            indiceResultadoDeBusqueda=findEmployeeById(list,len,auxIdInt);
+            if(indiceResultadoDeBusqueda == -1)
+            {
+                printf("\nNo existe el id ingresado\n");
+            }
+            else
+            {
+                list[indiceResultadoDeBusqueda].isEmpty=1;
+                printf("\nSe ha dado de baja al id %d\n",auxIdInt);
+                retorno=0;
+            }
         }
     }
-
+    return retorno;
 }
-int buscarEstadoDelArray(eEmpleado unArray[],int tam,int estadoDelIndice)
+int buscarEstadoDelArray(eEmployee unArray[],int tam,int estadoDelIndice)
 {
     int retorno=-1;
     int i;
     for(i=0;i<tam;i++)
     {
-        if(unArray[i].estaVacio==estadoDelIndice)
+        if(unArray[i].isEmpty==estadoDelIndice)
         {
             retorno=i;
         }
     }
     return retorno;
 }
-void modificarArray(eEmpleado unArray[],int tam)
+void modificarArray(eEmployee unArray[],int tam)
 {
     char auxIdStr[256];
     int auxIdInt;
@@ -285,7 +321,7 @@ void modificarArray(eEmpleado unArray[],int tam)
     {
         getStringNumeros(auxIdStr,"\nIngrese el id del empleado: ","\nRango valido entre 1 y 20\a\n","\nSolo se permiten numeros\a\n",1,20);
         auxIdInt=atoi(auxIdStr);
-        indiceResultadoDeBusqueda=buscarLugarLibre(unArray,tam,auxIdInt,0);
+        indiceResultadoDeBusqueda=findEmployeeById(unArray,tam,auxIdInt);
         if(indiceResultadoDeBusqueda == -1)
         {
             printf("\nNo existe el id ingresado\n");
@@ -296,7 +332,7 @@ void modificarArray(eEmpleado unArray[],int tam)
         }
     }
 }
-void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam)
+void mostrarPromedioDeSalarios(eEmployee unArray[],int tam)
 {
     int contadorSuperanElPromedio=0;
     float acumuladorDeSalarios=0;
@@ -305,18 +341,18 @@ void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam)
     int i;
     for(i=0;i<tam;i++)
     {
-        if(unArray[i].estaVacio==0)
+        if(unArray[i].isEmpty==0)
         {
             contadorDeAltas++;
-            acumuladorDeSalarios+=unArray[i].salario;
+            acumuladorDeSalarios+=unArray[i].salary;
         }
     }
     promedioDeSalarios=(float)acumuladorDeSalarios/contadorDeAltas;
     for(i=0;i<tam;i++)
     {
-        if(unArray[i].estaVacio==0)
+        if(unArray[i].isEmpty==0)
         {
-            if(unArray[i].salario>promedioDeSalarios)
+            if(unArray[i].salary>promedioDeSalarios)
             {
                 contadorSuperanElPromedio++;
             }
@@ -324,16 +360,16 @@ void mostrarPromedioDeSalarios(eEmpleado unArray[],int tam)
     }
     printf("\nSuma total de salarios: %.2f\nPromedio de salarios: %.2f\nCantidad de empleados que superan el salario promedio: %d\n",acumuladorDeSalarios,promedioDeSalarios,contadorSuperanElPromedio);
 }
-void ordenarArrayAscendiente(eEmpleado unArray[],int tam)
+void ordenarArrayAscendiente(eEmployee unArray[],int tam)
 {
     int i;
     int j;
-    eEmpleado auxArray;
+    eEmployee auxArray;
     for(i=0;i<tam-1;i++)
     {
         for(j=i+1;j<tam;j++)
         {
-            if(unArray[i].estaVacio==0)
+            if(unArray[i].isEmpty==0)
             {
                 if(unArray[i].sector>unArray[j].sector)
                 {
@@ -343,7 +379,7 @@ void ordenarArrayAscendiente(eEmpleado unArray[],int tam)
                 }
                 else if(unArray[i].sector==unArray[j].sector)
                 {
-                    if(strcmp(unArray[i].apellido,unArray[j].apellido)==1)
+                    if(strcmp(unArray[i].lastName,unArray[j].lastName)==1)
                     {
                         auxArray=unArray[i];
                         unArray[i]=unArray[j];
@@ -354,16 +390,16 @@ void ordenarArrayAscendiente(eEmpleado unArray[],int tam)
         }
     }
 }
-void ordenarArrayDescendiente(eEmpleado unArray[],int tam)
+void ordenarArrayDescendiente(eEmployee unArray[],int tam)
 {
     int i;
     int j;
-    eEmpleado auxArray;
+    eEmployee auxArray;
     for(i=0;i<tam-1;i++)
     {
         for(j=i+1;j<tam;j++)
         {
-            if(unArray[i].estaVacio==0)
+            if(unArray[i].isEmpty==0)
             {
                 if(unArray[i].sector<unArray[j].sector)
                 {
@@ -373,7 +409,7 @@ void ordenarArrayDescendiente(eEmpleado unArray[],int tam)
                 }
                 else if(unArray[i].sector==unArray[j].sector)
                 {
-                    if(strcmp(unArray[i].apellido,unArray[j].apellido)==-1)
+                    if(strcmp(unArray[i].lastName,unArray[j].lastName)==-1)
                     {
                         auxArray=unArray[i];
                         unArray[i]=unArray[j];
@@ -384,18 +420,25 @@ void ordenarArrayDescendiente(eEmpleado unArray[],int tam)
         }
     }
 }
-void ordenarListaDeEmpleados(eEmpleado unArray[],int tam,int opcionTipoDeOrden)
+int sortEmployees(eEmployee* list, int len, int order)
 {
-    if(opcionTipoDeOrden==1)
+    int retorno=-1;
+    if((list != NULL) && (len > 0))
     {
-        ordenarArrayAscendiente(unArray,tam);
+        if(order==1)
+        {
+            ordenarArrayAscendiente(list,len);
+            retorno=0;
+        }
+        else if(order==0)
+        {
+            ordenarArrayDescendiente(list,len);
+            retorno=0;
+        }
     }
-    else if(opcionTipoDeOrden==0)
-    {
-        ordenarArrayDescendiente(unArray,tam);
-    }
+    return retorno;
 }
-void menuModificarDatos(eEmpleado unArray[],int tam,int indice)
+void menuModificarDatos(eEmployee unArray[],int tam,int indice)
 {
     char auxNombreStr[256];
     char auxApellidoStr[256];
@@ -416,20 +459,20 @@ void menuModificarDatos(eEmpleado unArray[],int tam,int indice)
         {
             case 1:
                 getStringLetras(auxNombreStr,"\nIngrese el nombre del empleado: ","\nRango valido entre 1 y 20\n","\nSolo se permiten letras\n",1,20);
-                strcpy(unArray[indice].nombre,auxNombreStr);
+                strcpy(unArray[indice].name,auxNombreStr);
                 printf("\nSe ha modificado el nombre\n");
                 continuarOpcion='n';
                 break;
             case 2:
                 getStringLetras(auxApellidoStr,"\nIngrese el apellido del empleado: ","\nRango valido entre 1 y 20\n","\nSolo se permiten letras\n",1,20);
-                strcpy(unArray[indice].apellido,auxApellidoStr);
+                strcpy(unArray[indice].lastName,auxApellidoStr);
                 printf("\nSe ha modificado el apellido\n");
                 continuarOpcion='n';
                 break;
             case 3:
                 getStringNumerosFloat(auxSalarioStr,"\nIngrese el salario del empleado: ","\nRango valido entre 1 y 8\n","\nSolo se permiten numeros\n",1,8);
                 auxSalarioFloat=atof(auxSalarioStr);
-                unArray[indice].salario=auxSalarioFloat;
+                unArray[indice].salary=auxSalarioFloat;
                 printf("\nSe ha modificado el salario\n");
                 continuarOpcion='n';
                 break;
@@ -453,21 +496,30 @@ void menuModificarDatos(eEmpleado unArray[],int tam,int indice)
     }
     while(continuarOpcion=='s');
 }
-void harcodearPrimerPosicionLibre(eEmpleado unArray[],int tam,int parametroId,char parametroNombre[],char parametroApellido[],float parametroSalario,int parametroSector)
+int addEmployee(eEmployee* list, int len, int* contId, char name[],char lastName[],float salary,int sector)
 {
+    int retorno=-1;
+    int auxId;
     int indiceLibre;
-    indiceLibre=buscarLugarLibre(unArray,tam,-1,1);
-    if(indiceLibre==-1)
+    if((list != NULL) && (len > 0))
     {
-        printf("\nNo quedan lugares libres\n");
+        indiceLibre=buscarEstadoDelArray(list,len,1);
+        if(indiceLibre==-1)
+        {
+            printf("\nNo quedan lugares libres\n");
+        }
+        else
+        {
+            auxId=*contId;
+            list[indiceLibre].id=auxId;
+            strcpy(list[indiceLibre].name,name);
+            strcpy(list[indiceLibre].lastName,lastName);
+            list[indiceLibre].salary=salary;
+            list[indiceLibre].sector=sector;
+            list[indiceLibre].isEmpty=0;
+            *contId=auxId+1;
+            retorno=0;
+        }
     }
-    else
-    {
-        unArray[indiceLibre].id=parametroId;
-        strcpy(unArray[indiceLibre].nombre,parametroNombre);
-        strcpy(unArray[indiceLibre].apellido,parametroApellido);
-        unArray[indiceLibre].salario=parametroSalario;
-        unArray[indiceLibre].sector=parametroSector;
-        unArray[indiceLibre].estaVacio=0;
-    }
+    return retorno;
 }
