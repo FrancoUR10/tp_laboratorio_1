@@ -118,7 +118,7 @@ void pedirDatos(eEmpleado unArray[],int tam,int indice);
  * \return void No retorna nada
  *
  */
-void darDeAlta(eEmpleado unArray[],int tam);
+void darDeAlta(eEmpleado unArray[],int tam,int* contDadosDeAlta);
 
 /** \brief valida si el caracter ingresado contiene solo numeros y menos de dos puntos, ademas del rango establecido
  *

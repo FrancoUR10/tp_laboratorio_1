@@ -141,9 +141,8 @@ void mostrarArray(eEmpleado unArray[],int tam)
         mostrarPromedioDeSalarios(unArray,tam);
     }
 }
-void darDeAlta(eEmpleado unArray[],int tam)
+void darDeAlta(eEmpleado unArray[],int tam,int* contDadosDeAlta)
 {
-    char auxIdStr[256];
     int auxIdInt;
     int indiceLibre;
     indiceLibre=buscarLugarLibre(unArray,tam,-1,1);
@@ -153,18 +152,13 @@ void darDeAlta(eEmpleado unArray[],int tam)
     }
     else
     {
-        getStringNumeros(auxIdStr,"\nIngrese el id del empleado: ","\nRango valido entre 1 y 20\a\n","\nSolo se permiten numeros\a\n",1,20);
-        auxIdInt=atoi(auxIdStr);
-        while(buscarLugarLibre(unArray,tam,auxIdInt,0) != -1)
-        {
-            printf("\nEl id ingresado ya existe\n");
-            getStringNumeros(auxIdStr,"\nIngrese el id del empleado: ","\nRango valido entre 1 y 20\a\n","\nSolo se permiten numeros\a\n",1,20);
-            auxIdInt=atoi(auxIdStr);
-        }
+        auxIdInt=*contDadosDeAlta;
+
         pedirDatos(unArray,tam,indiceLibre);
         unArray[indiceLibre].id=auxIdInt;
         unArray[indiceLibre].estaVacio=0;
         printf("\nSe ha dado de alta al id: %d\n",auxIdInt);
+        *contDadosDeAlta=auxIdInt+1;
     }
 
 }

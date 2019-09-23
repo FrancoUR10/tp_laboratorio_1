@@ -9,6 +9,7 @@ int main()
     char continuarMenu='s';
 
     eEmpleado arrayEmpleados[MAX];
+    int contDeAltas=1;
     inicializarId(arrayEmpleados,MAX);
 
     // Hardcodear un solo dato como dado de alta:
@@ -20,7 +21,7 @@ int main()
         switch(opcionMenu)
         {
             case 1:
-                darDeAlta(arrayEmpleados,MAX);
+                darDeAlta(arrayEmpleados,MAX,&contDeAltas);
                 break;
             case 2:
                 darDeBaja(arrayEmpleados,MAX);
