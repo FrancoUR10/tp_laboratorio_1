@@ -2,7 +2,27 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Employee.h"
+
+/** \brief Carga la lista de empleados guardada en modo texto
+ *
+ * \param archivoTexto FILE* El archivo con la lista de empleados en modo texto
+ * \param pArrayListEmployee LinkedList* La lista dinamica
+ * \param historialAltasTexto FILE* El archivo con el contador de altas
+ * \param contAltas int* El contador de altas
+ * \return int Si se cargo el archivo [1] si no [0]
+ *
+ */
 int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas);
+
+/** \brief Carga la lista de empleados guardada en modo binario
+ *
+ * \param archivoBinario FILE* El archivo con la lista de empleados en modo binario
+ * \param pArrayListEmployee LinkedList* La lista dinamica
+ * \param historialAltasBinario FILE* El archivo con el contador de altas
+ * \param contAltas int* El contador de altas
+ * \return int Si se cargo el archivo [1] si no [0]
+ *
+ */
 int controller_loadFromBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas);
 
 /** \brief Da de alta a un empleado en la lista
@@ -62,7 +82,27 @@ int controller_mostrarUnEmpleado(Employee* empleado);
  *
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee);
+
+/** \brief Guarda los datos de los empleados en modo texto
+ *
+ * \param archivoTexto FILE* El archivo con la lista de empleados en modo texto
+ * \param pArrayListEmployee LinkedList* La lista dinamica
+ * \param historialAltasTexto FILE* El archivo con el contador de altas
+ * \param contAltas int* El contador de altas
+ * \return int Si se escribio el archivo [1] si no [0]
+ *
+ */
 int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas);
+
+/** \brief Guarda los datos de los empleados en modo binario
+ *
+ * \param archivoBinario FILE* El archivo con la lista de empleados en modo binario
+ * \param pArrayListEmployee LinkedList* La lista dinamica
+ * \param historialAltasBinario FILE* El archivo con el contador de altas
+ * \param contAltas int* El contador de altas
+ * \return int Si se escribio el archivo [1] si no [0]
+ *
+ */
 int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas);
 
 

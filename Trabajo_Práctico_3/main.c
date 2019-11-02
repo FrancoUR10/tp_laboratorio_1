@@ -24,8 +24,8 @@ int main()
 {
     FILE* archivoEmpleadosTexto=NULL;
     FILE* archivoHistorialAltasTexto=NULL;
-    //FILE* archivoEmpleadosBinario=NULL;
-    //FILE* archivoHistorialAltasBinario=NULL;
+    FILE* archivoEmpleadosBinario=NULL;
+    FILE* archivoHistorialAltasBinario=NULL;
     LinkedList* listaEmpleados=ll_newLinkedList();
     int contAltas=1;
     int opcionMenu;
@@ -49,7 +49,7 @@ int main()
                 controller_loadFromText(archivoEmpleadosTexto,listaEmpleados,archivoHistorialAltasTexto,&contAltas);
                 break;
             case 2:
-                //controller_loadFromBinary(archivoEmpleadosBinario,listaEmpleados,archivoHistorialAltasBinario,&contAltas);
+                controller_loadFromBinary(archivoEmpleadosBinario,listaEmpleados,archivoHistorialAltasBinario,&contAltas);
                 break;
             case 3:
                 controller_addEmployee(listaEmpleados,&contAltas);
@@ -70,7 +70,7 @@ int main()
                 controller_saveAsText(archivoEmpleadosTexto,listaEmpleados,archivoHistorialAltasTexto,&contAltas);
                 break;
             case 9:
-                //controller_saveAsBinary(archivoEmpleadosBinario,listaEmpleados,archivoHistorialAltasBinario,&contAltas);
+                controller_saveAsBinary(archivoEmpleadosBinario,listaEmpleados,archivoHistorialAltasBinario,&contAltas);
                 break;
             case 10:
                 continuarMenu='n';

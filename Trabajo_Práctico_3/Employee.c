@@ -24,7 +24,7 @@ int employee_setNombre(Employee* this,char* nombre)
 {
 
     int todoOk=0;
-    if(this != NULL && nombre != NULL && strlen(nombre) > 3)
+    if(this != NULL && nombre != NULL && strlen(nombre) > 2)
     {
         strcpy(this->nombre,nombre);
         todoOk=1;

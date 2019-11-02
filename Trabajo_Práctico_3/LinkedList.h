@@ -48,8 +48,6 @@ LinkedList* ll_newLinkedList(void);
  *
  */
 int ll_len(LinkedList* this);
-Node* test_getNode(LinkedList* this, int nodeIndex);
-int test_addNode(LinkedList* this, int nodeIndex,void* pElement);
 
 /** \brief Agrega un elemento dentro de la lista
  *

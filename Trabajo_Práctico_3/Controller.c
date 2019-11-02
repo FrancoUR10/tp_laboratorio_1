@@ -1,12 +1,5 @@
 #include "Controller.h"
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
- */
 int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas)
 {
     int seCargo=0;
@@ -29,7 +22,6 @@ int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FI
             aux=employee_newParametros(auxIdStr,auxNombre,auxHorasStr,auxSueldoStr);
             ll_add(pArrayListEmployee,aux);
         }
-        seCargo=1;
         fclose(archivoTexto);
         historialAltasTexto=fopen("historial_altas_modo_texto.csv","r");
         if(historialAltasTexto!=NULL)
@@ -37,50 +29,36 @@ int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FI
             fscanf(historialAltasTexto,"%[^\n]\n",auxIdStr);
             *contAltas=atoi(auxIdStr);
             fclose(historialAltasTexto);
+            seCargo=1;
         }
     }
     return seCargo;
 }
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
- */
 int controller_loadFromBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas)
 {
     int seCargo=0;
-    Employee* aux=NULL;
-    int id;
-    char nombre[256];
-    int horas;
-    int sueldo;
+    Employee* auxP=NULL;
     archivoBinario=fopen("data_modo_binario.bin","rb");
     if(archivoBinario!=NULL)
     {
         ll_clear(pArrayListEmployee);
         while(!feof(archivoBinario))
         {
+            auxP=employee_new();
+            fread(auxP,sizeof(Employee),1,archivoBinario);
             if(feof(archivoBinario))
             {
                 break;
             }
-            employee_new(aux);
-            fscanf(archivoBinario,"%d,%s,%d,%d\n",&id,nombre,&horas,&sueldo);
-            employee_setId(aux,id);
-            employee_setNombre(aux,nombre);
-            employee_setHorasTrabajadas(aux,horas);
-            employee_setSueldo(aux,sueldo);
-            ll_add(pArrayListEmployee,aux);
+            ll_add(pArrayListEmployee,auxP);
         }
-        seCargo=1;
         fclose(archivoBinario);
         historialAltasBinario=fopen("historial_altas_modo_binario.bin","rb");
         if(historialAltasBinario!=NULL)
         {
-            fscanf(historialAltasBinario,"%d\n",contAltas);
+            fread(contAltas,sizeof(int),1,historialAltasBinario);
             fclose(historialAltasBinario);
+            seCargo=1;
         }
     }
     return seCargo;
@@ -99,14 +77,14 @@ int controller_addEmployee(LinkedList* pArrayListEmployee,int* contAltas)
 
     if(ingresoSecuencialValido==1)
     {
-        if(!getStrLetras("\nIngrese el nombre: ",auxNombreStr,"\nSolo se permiten letras\n","\nRango valido entre 4 y 12\n",4,12,3))
+        if(!getStrLetras("\nIngrese el nombre: ",auxNombreStr,"\nSolo se permiten letras\n","\nRango valido entre 3 y 12\n",3,12,3))
         {
             ingresoSecuencialValido=0;
         }
         else if(!getStrNumeros("\nIngrese la cant. de horas trabajadas: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 24\n",1,24,3))
-            {
-                ingresoSecuencialValido=0;
-            }
+        {
+            ingresoSecuencialValido=0;
+        }
         else if(!getStrNumeros("\nIngrese el sueldo: ",auxSueldoStr,"\nSolo se permiten numeros\n","Numero valido entre el 1000 y el 10000",1000,10000,3))
         {
             ingresoSecuencialValido=0;
@@ -209,73 +187,73 @@ void controller_pedirDatosAEleccion(LinkedList* pArrayListEmployee,int indice)
         opcionMenu=getInt("\nIngrese una opcion: ");
         switch(opcionMenu)
         {
-            case 1:
-                if(getStrLetras("\nIngrese el nombre a modificar: ",auxNombreStr,"\nSolo se permiten letras\n","\nRango valido entre 4 y 12\n",4,12,3))
+        case 1:
+            if(getStrLetras("\nIngrese el nombre a modificar: ",auxNombreStr,"\nSolo se permiten letras\n","\nRango valido entre 3 y 12\n",3,12,3))
+            {
+                employee_setNombre(auxDatos,auxNombreStr);
+                printf("\nSe ha ingresado correctamente el nombre\n");
+                flagPrimerCambio=0;
+            }
+            system("pause");
+            break;
+        case 2:
+            if(getStrNumeros("\nIngrese las horas a modificar: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 24\n",1,24,3))
+            {
+                employee_setHorasTrabajadas(auxDatos,atoi(auxHorasStr));
+                printf("\nSe ha ingresado correctamente la hora\n");
+                flagPrimerCambio=0;
+            }
+            system("pause");
+            break;
+        case 3:
+            if(getStrNumeros("\nIngrese el sueldo a modificar: ",auxSueldoStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1000 y el 10000\n",1000,10000,3))
+            {
+                employee_setSueldo(auxDatos,atof(auxSueldoStr));
+                printf("\nSe ha ingresado correctamente el sueldo\n");
+                flagPrimerCambio=0;
+            }
+            system("pause");
+            break;
+        case 4:
+            if(flagPrimerCambio==1)
+            {
+                printf("\nNo se ha realizado ningun cambio que confirmar\n");
+            }
+            else
+            {
+                confirmaciones=confirmarCambios("\nDesea confirmar los cambios realizados? (s/n): ","\nSolo confirme con ('s' o con 'n'): ");
+                if(confirmaciones==1)
                 {
-                    employee_setNombre(auxDatos,auxNombreStr);
-                    printf("\nSe ha ingresado correctamente el nombre\n");
-                    flagPrimerCambio=0;
+                    *datosActuales=*auxDatos;
+                    printf("\nSe han confirmado los cambios realizados\n");
+                    flagPrimerCambio=1;
                 }
-                system("pause");
-                break;
-            case 2:
-                if(getStrNumeros("\nIngrese las horas a modificar: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 24\n",1,24,3))
+                else if(confirmaciones==0)
                 {
-                    employee_setHorasTrabajadas(auxDatos,atoi(auxHorasStr));
-                    printf("\nSe ha ingresado correctamente la hora\n");
-                    flagPrimerCambio=0;
+                    printf("\nConfirmacion cancelada por el usuario\n");
                 }
-                system("pause");
-                break;
-            case 3:
-                if(getStrNumeros("\nIngrese el sueldo a modificar: ",auxSueldoStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1000 y el 10000\n",1000,10000,3))
-                {
-                    employee_setSueldo(auxDatos,atof(auxSueldoStr));
-                    printf("\nSe ha ingresado correctamente el sueldo\n");
-                    flagPrimerCambio=0;
-                }
-                system("pause");
-                break;
-            case 4:
-                if(flagPrimerCambio==1)
-                {
-                    printf("\nNo se ha realizado ningun cambio que confirmar\n");
-                }
-                else
-                {
-                    confirmaciones=confirmarCambios("\nDesea confirmar los cambios realizados? (s/n): ","\nSolo confirme con ('s' o con 'n'): ");
-                    if(confirmaciones==1)
-                    {
-                        *datosActuales=*auxDatos;
-                        printf("\nSe han confirmado los cambios realizados\n");
-                        flagPrimerCambio=1;
-                    }
-                    else if(confirmaciones==0)
-                    {
-                        printf("\nConfirmacion cancelada por el usuario\n");
-                    }
-                }
-                system("pause");
-                break;
-            case 5:
-                if(flagPrimerCambio==0)
-                {
-                    confirmaciones=confirmarCambios("\nEsta seguro que desea salir sin confirmar cambios? (s/n): ","\nSolo confirme con ('s' o con 'n'): ");
-                    if(confirmaciones==1)
-                    {
-                        printf("\nModificacion finalizada\n");
-                        continuarMenu='n';
-                    }
-                }
-                else
+            }
+            system("pause");
+            break;
+        case 5:
+            if(flagPrimerCambio==0)
+            {
+                confirmaciones=confirmarCambios("\nEsta seguro que desea salir sin confirmar cambios? (s/n): ","\nSolo confirme con ('s' o con 'n'): ");
+                if(confirmaciones==1)
                 {
                     printf("\nModificacion finalizada\n");
                     continuarMenu='n';
                 }
-                break;
-            default:
-                printf("\nOpcion ingresada no valida\n");
-                system("pause");
+            }
+            else
+            {
+                printf("\nModificacion finalizada\n");
+                continuarMenu='n';
+            }
+            break;
+        default:
+            printf("\nOpcion ingresada no valida\n");
+            system("pause");
         }
     }
     while(continuarMenu=='s');
@@ -339,7 +317,7 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
     {
         printf("\nID          NOMBRE        HORAS     SUELDO\n");
         len=ll_len(pArrayListEmployee);
-        for(i=0;i<len;i++)
+        for(i=0; i<len; i++)
         {
             aux=(Employee*)ll_get(pArrayListEmployee,i);
             controller_mostrarUnEmpleado(aux);
@@ -378,34 +356,34 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
         opcionOrden=getInt("\nIngrese una opcion: ");
         switch(opcionOrden)
         {
-            case 1:
-                ll_sort(pArrayListEmployee,compararPorId,1);
-                printf("\nSe ha ordenado por id\n");
-                salirMenu='n';
-                break;
-            case 2:
-                ll_sort(pArrayListEmployee,compararPorNombre,1);
-                printf("\nSe ha ordenado por nombre\n");
-                salirMenu='n';
-                break;
-            case 3:
-                ll_sort(pArrayListEmployee,compararPorHoras,1);
-                printf("\nSe ha ordenado por las horas trabajadas\n");
-                salirMenu='n';
-                break;
-            case 4:
-                ll_sort(pArrayListEmployee,compararPorSueldo,1);
-                printf("\nSe ha ordenado por sueldo\n");
-                salirMenu='n';
-                break;
-            case 5:
-                seOrdeno=0;
-                printf("\nOrdenamiento cancelado\n");
-                salirMenu='n';
-                break;
-            default:
-                printf("\nOpcion ingresada no valida\n");
-                system("pause");
+        case 1:
+            ll_sort(pArrayListEmployee,compararPorId,1);
+            printf("\nSe ha ordenado por id\n");
+            salirMenu='n';
+            break;
+        case 2:
+            ll_sort(pArrayListEmployee,compararPorNombre,1);
+            printf("\nSe ha ordenado por nombre\n");
+            salirMenu='n';
+            break;
+        case 3:
+            ll_sort(pArrayListEmployee,compararPorHoras,1);
+            printf("\nSe ha ordenado por las horas trabajadas\n");
+            salirMenu='n';
+            break;
+        case 4:
+            ll_sort(pArrayListEmployee,compararPorSueldo,1);
+            printf("\nSe ha ordenado por sueldo\n");
+            salirMenu='n';
+            break;
+        case 5:
+            seOrdeno=0;
+            printf("\nOrdenamiento cancelado\n");
+            salirMenu='n';
+            break;
+        default:
+            printf("\nOpcion ingresada no valida\n");
+            system("pause");
         }
     }
     while(salirMenu=='s');
@@ -421,7 +399,7 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas)
 {
-    int sePudo=1;
+    int sePudo=0;
     int i;
     int len;
     char auxIdStr[256];
@@ -433,7 +411,7 @@ int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE
     if(archivoTexto != NULL)
     {
         len=ll_len(pArrayListEmployee);
-        for(i=0;i<len;i++)
+        for(i=0; i<len; i++)
         {
             aux=ll_get(pArrayListEmployee,i);
             itoa(aux->id,auxIdStr,10);
@@ -449,39 +427,33 @@ int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE
             itoa(*contAltas,auxIdStr,10);
             fprintf(historialAltasTexto,"%s\n",auxIdStr);
             fclose(historialAltasTexto);
+            sePudo=1;
         }
     }
     return sePudo;
 }
-
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
- */
 int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas)
 {
-    int sePudo=1;
+    int sePudo=0;
     int i;
     int len;
-    Employee* aux;
+    Employee* auxP;
     archivoBinario=fopen("data_modo_binario.bin","wb");
     if(archivoBinario != NULL)
     {
         len=ll_len(pArrayListEmployee);
-        for(i=0;i<len;i++)
+        for(i=0; i<len; i++)
         {
-            aux=ll_get(pArrayListEmployee,i);
-            fprintf(archivoBinario,"%d,%s,%d,%d\n",aux->id,aux->nombre,aux->horasTrabajadas,aux->sueldo);
+           auxP = ll_get(pArrayListEmployee,i);
+           fwrite(auxP,sizeof(Employee),1,archivoBinario);
         }
         fclose(archivoBinario);
         historialAltasBinario=fopen("historial_altas_modo_binario.bin","wb");
         if(historialAltasBinario!=NULL)
         {
-            fprintf(historialAltasBinario,"%d\n",*contAltas);
+            fwrite(contAltas,sizeof(int),1,historialAltasBinario);
             fclose(historialAltasBinario);
+            sePudo=1;
         }
     }
     return sePudo;
