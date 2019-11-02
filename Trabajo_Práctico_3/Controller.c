@@ -341,52 +341,62 @@ int controller_mostrarUnEmpleado(Employee* empleado)
 }
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
-    int seOrdeno=1;
+    int seOrdeno=0;
     int opcionOrden;
     char salirMenu='s';
-    do
+    if(ll_isEmpty(pArrayListEmployee)==1)
     {
-        system("cls");
-        printf("Por cual criterio desea ordenar?:\n");
-        printf("1-ORDENAR POR ID\n");
-        printf("2-ORDENAR POR NOMBRE\n");
-        printf("3-ORDENAR POR HORAS\n");
-        printf("4-ORDENAR POR SUELDO\n");
-        printf("5-CANCELAR ORDENAMIENTO\n");
-        opcionOrden=getInt("\nIngrese una opcion: ");
-        switch(opcionOrden)
-        {
-        case 1:
-            ll_sort(pArrayListEmployee,compararPorId,1);
-            printf("\nSe ha ordenado por id\n");
-            salirMenu='n';
-            break;
-        case 2:
-            ll_sort(pArrayListEmployee,compararPorNombre,1);
-            printf("\nSe ha ordenado por nombre\n");
-            salirMenu='n';
-            break;
-        case 3:
-            ll_sort(pArrayListEmployee,compararPorHoras,1);
-            printf("\nSe ha ordenado por las horas trabajadas\n");
-            salirMenu='n';
-            break;
-        case 4:
-            ll_sort(pArrayListEmployee,compararPorSueldo,1);
-            printf("\nSe ha ordenado por sueldo\n");
-            salirMenu='n';
-            break;
-        case 5:
-            seOrdeno=0;
-            printf("\nOrdenamiento cancelado\n");
-            salirMenu='n';
-            break;
-        default:
-            printf("\nOpcion ingresada no valida\n");
-            system("pause");
-        }
+        printf("\nNo hay ningun elemento en la lista\n");
     }
-    while(salirMenu=='s');
+    else
+    {
+        do
+        {
+            system("cls");
+            printf("Por cual criterio desea ordenar?:\n");
+            printf("1-ORDENAR POR ID\n");
+            printf("2-ORDENAR POR NOMBRE\n");
+            printf("3-ORDENAR POR HORAS\n");
+            printf("4-ORDENAR POR SUELDO\n");
+            printf("5-CANCELAR ORDENAMIENTO\n");
+            opcionOrden=getInt("\nIngrese una opcion: ");
+            switch(opcionOrden)
+            {
+            case 1:
+                ll_sort(pArrayListEmployee,compararPorId,1);
+                seOrdeno=1;
+                printf("\nSe ha ordenado por id\n");
+                salirMenu='n';
+                break;
+            case 2:
+                ll_sort(pArrayListEmployee,compararPorNombre,1);
+                seOrdeno=1;
+                printf("\nSe ha ordenado por nombre\n");
+                salirMenu='n';
+                break;
+            case 3:
+                ll_sort(pArrayListEmployee,compararPorHoras,1);
+                seOrdeno=1;
+                printf("\nSe ha ordenado por las horas trabajadas\n");
+                salirMenu='n';
+                break;
+            case 4:
+                ll_sort(pArrayListEmployee,compararPorSueldo,1);
+                seOrdeno=1;
+                printf("\nSe ha ordenado por sueldo\n");
+                salirMenu='n';
+                break;
+            case 5:
+                printf("\nOrdenamiento cancelado\n");
+                salirMenu='n';
+                break;
+            default:
+                printf("\nOpcion ingresada no valida\n");
+                system("pause");
+            }
+        }
+        while(salirMenu=='s');
+    }
     return seOrdeno;
 }
 
@@ -407,27 +417,34 @@ int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE
     char auxHorasStr[256];
     char auxSueldoStr[256];
     Employee* aux;
-    archivoTexto=fopen("data_modo_texto.csv","w");
-    if(archivoTexto != NULL)
+    if(ll_isEmpty(pArrayListEmployee)==1)
     {
-        len=ll_len(pArrayListEmployee);
-        for(i=0; i<len; i++)
+        printf("\nNo hay ningun elemento para guardar en la lista\n");
+    }
+    else
+    {
+        archivoTexto=fopen("data_modo_texto.csv","w");
+        if(archivoTexto != NULL)
         {
-            aux=ll_get(pArrayListEmployee,i);
-            itoa(aux->id,auxIdStr,10);
-            employee_getNombre(aux,auxNombreStr);
-            itoa(aux->horasTrabajadas,auxHorasStr,10);
-            itoa(aux->sueldo,auxSueldoStr,10);
-            fprintf(archivoTexto,"%s,%s,%s,%s\n",auxIdStr,auxNombreStr,auxHorasStr,auxSueldoStr);
-        }
-        fclose(archivoTexto);
-        historialAltasTexto=fopen("historial_altas_modo_texto.csv","w");
-        if(historialAltasTexto!=NULL)
-        {
-            itoa(*contAltas,auxIdStr,10);
-            fprintf(historialAltasTexto,"%s\n",auxIdStr);
-            fclose(historialAltasTexto);
-            sePudo=1;
+            len=ll_len(pArrayListEmployee);
+            for(i=0; i<len; i++)
+            {
+                aux=ll_get(pArrayListEmployee,i);
+                itoa(aux->id,auxIdStr,10);
+                employee_getNombre(aux,auxNombreStr);
+                itoa(aux->horasTrabajadas,auxHorasStr,10);
+                itoa(aux->sueldo,auxSueldoStr,10);
+                fprintf(archivoTexto,"%s,%s,%s,%s\n",auxIdStr,auxNombreStr,auxHorasStr,auxSueldoStr);
+            }
+            fclose(archivoTexto);
+            historialAltasTexto=fopen("historial_altas_modo_texto.csv","w");
+            if(historialAltasTexto!=NULL)
+            {
+                itoa(*contAltas,auxIdStr,10);
+                fprintf(historialAltasTexto,"%s\n",auxIdStr);
+                fclose(historialAltasTexto);
+                sePudo=1;
+            }
         }
     }
     return sePudo;
@@ -438,22 +455,29 @@ int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,
     int i;
     int len;
     Employee* auxP;
-    archivoBinario=fopen("data_modo_binario.bin","wb");
-    if(archivoBinario != NULL)
+    if(ll_isEmpty(pArrayListEmployee)==1)
     {
-        len=ll_len(pArrayListEmployee);
-        for(i=0; i<len; i++)
+        printf("\nNo hay ningun elemento para guardar en la lista\n");
+    }
+    else
+    {
+        archivoBinario=fopen("data_modo_binario.bin","wb");
+        if(archivoBinario != NULL)
         {
-           auxP = ll_get(pArrayListEmployee,i);
-           fwrite(auxP,sizeof(Employee),1,archivoBinario);
-        }
-        fclose(archivoBinario);
-        historialAltasBinario=fopen("historial_altas_modo_binario.bin","wb");
-        if(historialAltasBinario!=NULL)
-        {
-            fwrite(contAltas,sizeof(int),1,historialAltasBinario);
-            fclose(historialAltasBinario);
-            sePudo=1;
+            len=ll_len(pArrayListEmployee);
+            for(i=0; i<len; i++)
+            {
+               auxP = ll_get(pArrayListEmployee,i);
+               fwrite(auxP,sizeof(Employee),1,archivoBinario);
+            }
+            fclose(archivoBinario);
+            historialAltasBinario=fopen("historial_altas_modo_binario.bin","wb");
+            if(historialAltasBinario!=NULL)
+            {
+                fwrite(contAltas,sizeof(int),1,historialAltasBinario);
+                fclose(historialAltasBinario);
+                sePudo=1;
+            }
         }
     }
     return sePudo;
