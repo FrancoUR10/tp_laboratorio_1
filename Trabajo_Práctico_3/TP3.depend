@@ -251,3 +251,49 @@
 	<string.h>
 	"Employee.h"
 
+1572565086 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\employee.c
+	"Employee.h"
+
+1572564550 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\employee.h
+	<stdlib.h>
+	<string.h>
+	"Validaciones.h"
+	"LinkedList.h"
+
+1572388858 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\validaciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1572486313 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\linkedlist.h
+
+1572660450 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Validaciones.h"
+	"LinkedList.h"
+	"Controller.h"
+	"Employee.h"
+
+1572658867 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\controller.h
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Employee.h"
+
+1572564616 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\parser.c
+	"parser.h"
+
+1572564616 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\parser.h
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Employee.h"
+
+1572388858 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\validaciones.c
+	"Validaciones.h"
+
+1572662949 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_3\controller.c
+	"Controller.h"
+

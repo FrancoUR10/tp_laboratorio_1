@@ -7,11 +7,40 @@
  * \return int
  *
  */
-int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
+int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas)
 {
-    return 1;
+    int seCargo=0;
+    Employee* aux;
+    char auxIdStr[256];
+    char auxNombre[256];
+    char auxHorasStr[256];
+    char auxSueldoStr[256];
+    archivoTexto=fopen("data_modo_texto.csv","r");
+    if(archivoTexto!=NULL)
+    {
+        ll_clear(pArrayListEmployee);
+        while(!feof(archivoTexto))
+        {
+            if(feof(archivoTexto))
+            {
+                break;
+            }
+            fscanf(archivoTexto,"%[^,],%[^,],%[^,],%[^\n]\n",auxIdStr,auxNombre,auxHorasStr,auxSueldoStr);
+            aux=employee_newParametros(auxIdStr,auxNombre,auxHorasStr,auxSueldoStr);
+            ll_add(pArrayListEmployee,aux);
+        }
+        seCargo=1;
+        fclose(archivoTexto);
+        historialAltasTexto=fopen("historial_altas_modo_texto.csv","r");
+        if(historialAltasTexto!=NULL)
+        {
+            fscanf(historialAltasTexto,"%[^\n]\n",auxIdStr);
+            *contAltas=atoi(auxIdStr);
+            fclose(historialAltasTexto);
+        }
+    }
+    return seCargo;
 }
-
 /** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
  *
  * \param path char*
@@ -19,9 +48,42 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
+int controller_loadFromBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas)
 {
-    return 1;
+    int seCargo=0;
+    Employee* aux=NULL;
+    int id;
+    char nombre[256];
+    int horas;
+    int sueldo;
+    archivoBinario=fopen("data_modo_binario.bin","rb");
+    if(archivoBinario!=NULL)
+    {
+        ll_clear(pArrayListEmployee);
+        while(!feof(archivoBinario))
+        {
+            if(feof(archivoBinario))
+            {
+                break;
+            }
+            employee_new(aux);
+            fscanf(archivoBinario,"%d,%s,%d,%d\n",&id,nombre,&horas,&sueldo);
+            employee_setId(aux,id);
+            employee_setNombre(aux,nombre);
+            employee_setHorasTrabajadas(aux,horas);
+            employee_setSueldo(aux,sueldo);
+            ll_add(pArrayListEmployee,aux);
+        }
+        seCargo=1;
+        fclose(archivoBinario);
+        historialAltasBinario=fopen("historial_altas_modo_binario.bin","rb");
+        if(historialAltasBinario!=NULL)
+        {
+            fscanf(historialAltasBinario,"%d\n",contAltas);
+            fclose(historialAltasBinario);
+        }
+    }
+    return seCargo;
 }
 int controller_addEmployee(LinkedList* pArrayListEmployee,int* contAltas)
 {
@@ -41,11 +103,11 @@ int controller_addEmployee(LinkedList* pArrayListEmployee,int* contAltas)
         {
             ingresoSecuencialValido=0;
         }
-        else if(!getStrNumeros("\nIngrese la cant. de horas trabajadas: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 10\n",1,10,3))
+        else if(!getStrNumeros("\nIngrese la cant. de horas trabajadas: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 24\n",1,24,3))
             {
                 ingresoSecuencialValido=0;
             }
-        else if(!getStrNumeros("\nIngrese el sueldo: ",auxSueldoStr,"\nSolo se permiten numeros\n","Numero valido entre el 800 y el 10000",800,10000,3))
+        else if(!getStrNumeros("\nIngrese el sueldo: ",auxSueldoStr,"\nSolo se permiten numeros\n","Numero valido entre el 1000 y el 10000",1000,10000,3))
         {
             ingresoSecuencialValido=0;
         }
@@ -157,7 +219,7 @@ void controller_pedirDatosAEleccion(LinkedList* pArrayListEmployee,int indice)
                 system("pause");
                 break;
             case 2:
-                if(getStrNumeros("\nIngrese las horas a modificar: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 10\n",1,10,3))
+                if(getStrNumeros("\nIngrese las horas a modificar: ",auxHorasStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1 y el 24\n",1,24,3))
                 {
                     employee_setHorasTrabajadas(auxDatos,atoi(auxHorasStr));
                     printf("\nSe ha ingresado correctamente la hora\n");
@@ -166,7 +228,7 @@ void controller_pedirDatosAEleccion(LinkedList* pArrayListEmployee,int indice)
                 system("pause");
                 break;
             case 3:
-                if(getStrNumeros("\nIngrese el sueldo a modificar: ",auxSueldoStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 800 y el 10000\n",800,10000,3))
+                if(getStrNumeros("\nIngrese el sueldo a modificar: ",auxSueldoStr,"\nSolo se permiten numeros\n","\nNumero valido entre el 1000 y el 10000\n",1000,10000,3))
                 {
                     employee_setSueldo(auxDatos,atof(auxSueldoStr));
                     printf("\nSe ha ingresado correctamente el sueldo\n");
@@ -357,9 +419,39 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas)
 {
-    return 1;
+    int sePudo=1;
+    int i;
+    int len;
+    char auxIdStr[256];
+    char auxNombreStr[256];
+    char auxHorasStr[256];
+    char auxSueldoStr[256];
+    Employee* aux;
+    archivoTexto=fopen("data_modo_texto.csv","w");
+    if(archivoTexto != NULL)
+    {
+        len=ll_len(pArrayListEmployee);
+        for(i=0;i<len;i++)
+        {
+            aux=ll_get(pArrayListEmployee,i);
+            itoa(aux->id,auxIdStr,10);
+            employee_getNombre(aux,auxNombreStr);
+            itoa(aux->horasTrabajadas,auxHorasStr,10);
+            itoa(aux->sueldo,auxSueldoStr,10);
+            fprintf(archivoTexto,"%s,%s,%s,%s\n",auxIdStr,auxNombreStr,auxHorasStr,auxSueldoStr);
+        }
+        fclose(archivoTexto);
+        historialAltasTexto=fopen("historial_altas_modo_texto.csv","w");
+        if(historialAltasTexto!=NULL)
+        {
+            itoa(*contAltas,auxIdStr,10);
+            fprintf(historialAltasTexto,"%s\n",auxIdStr);
+            fclose(historialAltasTexto);
+        }
+    }
+    return sePudo;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
@@ -369,8 +461,29 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas)
 {
-    return 1;
+    int sePudo=1;
+    int i;
+    int len;
+    Employee* aux;
+    archivoBinario=fopen("data_modo_binario.bin","wb");
+    if(archivoBinario != NULL)
+    {
+        len=ll_len(pArrayListEmployee);
+        for(i=0;i<len;i++)
+        {
+            aux=ll_get(pArrayListEmployee,i);
+            fprintf(archivoBinario,"%d,%s,%d,%d\n",aux->id,aux->nombre,aux->horasTrabajadas,aux->sueldo);
+        }
+        fclose(archivoBinario);
+        historialAltasBinario=fopen("historial_altas_modo_binario.bin","wb");
+        if(historialAltasBinario!=NULL)
+        {
+            fprintf(historialAltasBinario,"%d\n",*contAltas);
+            fclose(historialAltasBinario);
+        }
+    }
+    return sePudo;
 }
 

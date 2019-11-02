@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Employee.h"
-int controller_loadFromText(char* path , LinkedList* pArrayListEmployee);
-int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee);
+int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas);
+int controller_loadFromBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas);
 
 /** \brief Da de alta a un empleado en la lista
  *
@@ -62,7 +62,7 @@ int controller_mostrarUnEmpleado(Employee* empleado);
  *
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee);
-int controller_saveAsText(char* path , LinkedList* pArrayListEmployee);
-int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee);
+int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas);
+int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,FILE* historialAltasBinario,int* contAltas);
 
 
