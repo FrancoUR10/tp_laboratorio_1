@@ -65,13 +65,7 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas);
  *
  */
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas);
-/** \brief
- *
- * \param this Employee*
- * \param horasTrabajadas int
- * \return int
- *
- */
+
 /** \brief Guarda un sueldo en el campo de una estructura
  *
  * \param this Employee* El puntero a Employee

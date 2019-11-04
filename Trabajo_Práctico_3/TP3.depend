@@ -300,27 +300,27 @@
 1572705237 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\controller.c
 	"Controller.h"
 
-1572704772 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\controller.h
+1572868887 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\controller.h
 	<stdio.h>
 	<stdlib.h>
 	"LinkedList.h"
 	"Employee.h"
 
-1572705127 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\linkedlist.h
+1572868887 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\linkedlist.h
 
-1572696791 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\employee.h
+1572868887 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\employee.h
 	<stdlib.h>
 	<string.h>
 	"Validaciones.h"
 	"LinkedList.h"
 
-1572696791 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\validaciones.h
+1572868887 c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\validaciones.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
 
-1572697894 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\employee.c
+1572868887 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\employee.c
 	"Employee.h"
 
 1572696791 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\parser.c
@@ -332,10 +332,10 @@
 	"LinkedList.h"
 	"Employee.h"
 
-1572696791 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\validaciones.c
+1572868887 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\validaciones.c
 	"Validaciones.h"
 
-1572705098 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\main.c
+1572868887 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_3\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Validaciones.h"

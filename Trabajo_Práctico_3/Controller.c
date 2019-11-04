@@ -29,6 +29,7 @@ int controller_loadFromText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FI
             fscanf(historialAltasTexto,"%[^\n]\n",auxIdStr);
             *contAltas=atoi(auxIdStr);
             fclose(historialAltasTexto);
+            printf("\nSe han cargado los datos en modo texto\n");
             seCargo=1;
         }
     }
@@ -58,6 +59,7 @@ int controller_loadFromBinary(FILE* archivoBinario,LinkedList* pArrayListEmploye
         {
             fread(contAltas,sizeof(int),1,historialAltasBinario);
             fclose(historialAltasBinario);
+            printf("\nSe han cargado los datos en modo binario\n");
             seCargo=1;
         }
     }
@@ -399,14 +401,6 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
     }
     return seOrdeno;
 }
-
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
- */
 int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE* historialAltasTexto,int* contAltas)
 {
     int sePudo=0;
@@ -443,6 +437,7 @@ int controller_saveAsText(FILE* archivoTexto,LinkedList* pArrayListEmployee,FILE
                 itoa(*contAltas,auxIdStr,10);
                 fprintf(historialAltasTexto,"%s\n",auxIdStr);
                 fclose(historialAltasTexto);
+                printf("\nSe han guardado los datos en modo texto\n");
                 sePudo=1;
             }
         }
@@ -476,10 +471,10 @@ int controller_saveAsBinary(FILE* archivoBinario,LinkedList* pArrayListEmployee,
             {
                 fwrite(contAltas,sizeof(int),1,historialAltasBinario);
                 fclose(historialAltasBinario);
+                printf("\nSe han guardado los datos en modo binario\n");
                 sePudo=1;
             }
         }
     }
     return sePudo;
 }
-
