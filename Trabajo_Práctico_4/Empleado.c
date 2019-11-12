@@ -416,7 +416,7 @@ int empleado_modificarDatos(LinkedList* listaEmpleados)
             }
             else
             {
-                menuPedirDatosAModificar(listaEmpleados,indiceResultadoBusqueda);
+                empleado_pedirDatosAModificar(listaEmpleados,indiceResultadoBusqueda);
                 sePudo=1;
             }
         }
@@ -427,7 +427,7 @@ int empleado_modificarDatos(LinkedList* listaEmpleados)
     }
     return sePudo;
 }
-void menuPedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontrado)
+void empleado_pedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontrado)
 {
     int confirmacion;
     int flagDatoIngresado=0;

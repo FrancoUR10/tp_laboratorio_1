@@ -234,7 +234,7 @@ int empleado_modificarDatos(LinkedList* listaEmpleados);
  * \return void No retorna nada
  *
  */
-void menuPedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontrado);
+void empleado_pedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontrado);
 
 /** \brief Guarda los datos de los empleados en modo binario
  *
