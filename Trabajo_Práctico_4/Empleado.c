@@ -140,6 +140,62 @@ eEmpleado* empleado_nuevoEmpleadoParametros(char* id,char* nombre,char* apellido
     }
     return unEmpleado;
 }
+int empleado_mostrarUnEmpleado(eEmpleado* unEmpleado)
+{
+    int seMostro=0;
+    if(unEmpleado!=NULL)
+    {
+        printf("\n%d",unEmpleado->id);
+        printf("%14s",unEmpleado->nombre);
+        printf("%14s",unEmpleado->apellido);
+        printf("%7d",unEmpleado->edad);
+        printf("%12.2f\n",unEmpleado->sueldo);
+        seMostro=1;
+    }
+    return seMostro;
+}
+void empleado_mostrarListaEmpleados(LinkedList* listaEmpleados)
+{
+    eEmpleado* aux;
+    int i;
+    int len=ll_len(listaEmpleados);
+    if(listaEmpleados!=NULL)
+    {
+        if(listaEmpleados!=NULL && ll_isEmpty(listaEmpleados)==1)
+        {
+            printf("\nNo hay ningun elemento en la lista\n");
+        }
+        else
+        {
+            printf("\nID       NOMBRE      APELLIDO     EDAD   SUELDO\n");
+            for(i=0;i<len;i++)
+            {
+                aux=(eEmpleado*)ll_get(listaEmpleados,i);
+                empleado_mostrarUnEmpleado(aux);
+            }
+        }
+    }
+}
+int empleado_buscarPorId(LinkedList* listaEmpleados,int idABuscar)
+{
+    int retorno=-1;
+    eEmpleado* aux;
+    int i;
+    int len=ll_len(listaEmpleados);
+    if(listaEmpleados!=NULL)
+    {
+        for(i=0;i<len;i++)
+        {
+            aux=(eEmpleado*)ll_get(listaEmpleados,i);
+            if(aux->id==idABuscar)
+            {
+                retorno=i;
+                break;
+            }
+        }
+    }
+    return retorno;
+}
 int empleado_compararPorId(void* empleado1,void* empleado2)
 {
     int comparacion=-1;
@@ -234,62 +290,6 @@ int empleado_compararPorSueldo(void* empleado1,void* empleado2)
         comparacion=0;
     }
     return comparacion;
-}
-int empleado_mostrarUnEmpleado(eEmpleado* unEmpleado)
-{
-    int seMostro=0;
-    if(unEmpleado!=NULL)
-    {
-        printf("\n%d",unEmpleado->id);
-        printf("%14s",unEmpleado->nombre);
-        printf("%14s",unEmpleado->apellido);
-        printf("%7d",unEmpleado->edad);
-        printf("%12.2f\n",unEmpleado->sueldo);
-        seMostro=1;
-    }
-    return seMostro;
-}
-void empleado_mostrarListaEmpleados(LinkedList* listaEmpleados)
-{
-    eEmpleado* aux;
-    int i;
-    int len=ll_len(listaEmpleados);
-    if(listaEmpleados!=NULL)
-    {
-        if(listaEmpleados!=NULL && ll_isEmpty(listaEmpleados)==1)
-        {
-            printf("\nNo hay ningun elemento en la lista\n");
-        }
-        else
-        {
-            printf("\nID       NOMBRE      APELLIDO     EDAD   SUELDO\n");
-            for(i=0;i<len;i++)
-            {
-                aux=(eEmpleado*)ll_get(listaEmpleados,i);
-                empleado_mostrarUnEmpleado(aux);
-            }
-        }
-    }
-}
-int empleado_buscarPorId(LinkedList* listaEmpleados,int idABuscar)
-{
-    int retorno=-1;
-    eEmpleado* aux;
-    int i;
-    int len=ll_len(listaEmpleados);
-    if(listaEmpleados!=NULL)
-    {
-        for(i=0;i<len;i++)
-        {
-            aux=(eEmpleado*)ll_get(listaEmpleados,i);
-            if(aux->id==idABuscar)
-            {
-                retorno=i;
-                break;
-            }
-        }
-    }
-    return retorno;
 }
 int empleado_darDeAlta(LinkedList* listaEmpleados,int* contAltas)
 {
@@ -538,64 +538,6 @@ void empleado_pedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontra
     }
     while(continuarMenu=='s');
 }
-int empleado_guardarDatos(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
-{
-    int sePudo=-1;
-    int i;
-    int len=ll_len(listaEmpleados);
-    eEmpleado* auxDatos;
-    if(listaEmpleados!=NULL && ll_isEmpty(listaEmpleados)==1)
-    {
-        printf("\nNo hay ningun elemento en la lista\n");
-    }
-    else
-    {
-        archivo=fopen("empleados.csv","wb");
-        if(archivo!=NULL)
-        {
-            fwrite(contAltas,sizeof(int),1,archivo);
-            for(i=0;i<len;i++)
-            {
-                auxDatos=ll_get(listaEmpleados,i);
-                fwrite(auxDatos,sizeof(eEmpleado),1,archivo);
-            }
-            fclose(archivo);
-            printf("\nSe han guardado los datos\n");
-            sePudo=1;
-        }
-    }
-    return sePudo;
-}
-int empleado_cargarDatos(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
-{
-    int sePudo=-1;
-    eEmpleado* auxDatos;
-    {
-        archivo=fopen("empleados.csv","rb");
-        if(archivo!=NULL)
-        {
-            fread(contAltas,sizeof(int),1,archivo);
-            ll_clear(listaEmpleados);
-            while(!feof(archivo))
-            {
-                auxDatos=empleado_nuevoEmpleado();
-                if(auxDatos!=NULL)
-                {
-                    fread(auxDatos,sizeof(eEmpleado),1,archivo);
-                    if(feof(archivo))
-                    {
-                        break;
-                    }
-                    ll_add(listaEmpleados,auxDatos);
-                }
-            }
-            fclose(archivo);
-            printf("\nSe han cargado los datos\n");
-            sePudo=1;
-        }
-    }
-    return sePudo;
-}
 void empleado_ordenarEmpleados(LinkedList* listaEmpleados)
 {
     int elejirOrden;
@@ -681,4 +623,136 @@ void empleado_ordenarEmpleados(LinkedList* listaEmpleados)
         }
         while(continuarMenu=='s');
     }
+}
+int empleado_guardarDatosModoTexto(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
+{
+    char auxAltasStr[256];
+    char auxIdStr[256];
+    char auxNombreStr[256];
+    char auxApellidoStr[256];
+    char auxEdadStr[256];
+    char auxSueldoStr[256];
+    int sePudo=-1;
+    eEmpleado* auxDatos;
+    int i;
+    int len=ll_len(listaEmpleados);
+    if(listaEmpleados!=NULL && ll_isEmpty(listaEmpleados)==1)
+    {
+        printf("\nNo hay ningun elemento en la lista\n");
+    }
+    else
+    {
+        archivo=fopen("datos_texto.csv","w");
+        if(archivo!=NULL)
+        {
+            itoa(*contAltas,auxAltasStr,10);
+            fprintf(archivo,"%s\n",auxAltasStr);
+            fprintf(archivo,"ID;NOMBRE;APELLIDO;EDAD;SUELDO\n");
+            for(i=0;i<len;i++)
+            {
+                auxDatos=(eEmpleado*)ll_get(listaEmpleados,i);
+                itoa(auxDatos->id,auxIdStr,10);
+                empleado_getNombre(auxDatos,auxNombreStr);
+                empleado_getApellido(auxDatos,auxApellidoStr);
+                itoa(auxDatos->edad,auxEdadStr,10);
+                sprintf(auxSueldoStr,"%.2f",auxDatos->sueldo);
+                fprintf(archivo,"%s;%s;%s;%s;%s\n",auxIdStr,auxNombreStr,auxApellidoStr,auxEdadStr,auxSueldoStr);
+            }
+            fclose(archivo);
+            printf("\nSe han guardado los datos\n");
+            sePudo=1;
+        }
+    }
+    return sePudo;
+}
+int empleado_cargarDatosModoTexto(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
+{
+    char auxAltasStr[256];
+    char auxIdStr[256];
+    char auxNombreStr[256];
+    char auxApellidoStr[256];
+    char auxEdadStr[256];
+    char auxSueldoStr[256];
+    eEmpleado* auxDatos;
+    int sePudo=-1;
+    archivo=fopen("datos_texto.csv","r");
+    if(archivo!=NULL)
+    {
+        ll_clear(listaEmpleados);
+        fscanf(archivo,"%[^\n]\n",auxAltasStr);
+        *contAltas=atoi(auxAltasStr);
+        fscanf(archivo,"%[^;];%[^;];%[^;];%[^;];%[^\n]\n",auxIdStr,auxNombreStr,auxApellidoStr,auxEdadStr,auxSueldoStr);
+        while(!feof(archivo))
+        {
+            fscanf(archivo,"%[^;];%[^;];%[^;];%[^;];%[^\n]\n",auxIdStr,auxNombreStr,auxApellidoStr,auxEdadStr,auxSueldoStr);
+            auxDatos=empleado_nuevoEmpleadoParametros(auxIdStr,auxNombreStr,auxApellidoStr,auxEdadStr,auxSueldoStr);
+            ll_add(listaEmpleados,auxDatos);
+            if(feof(archivo))
+            {
+                break;
+            }
+        }
+        fclose(archivo);
+        printf("\nSe han cargado los datos\n");
+        sePudo=1;
+    }
+    return sePudo;
+}
+int empleado_guardarDatosModoBinario(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
+{
+    int sePudo=-1;
+    int i;
+    int len=ll_len(listaEmpleados);
+    eEmpleado* auxDatos;
+    if(listaEmpleados!=NULL && ll_isEmpty(listaEmpleados)==1)
+    {
+        printf("\nNo hay ningun elemento en la lista\n");
+    }
+    else
+    {
+        archivo=fopen("datos_binario","wb");
+        if(archivo!=NULL)
+        {
+            fwrite(contAltas,sizeof(int),1,archivo);
+            for(i=0;i<len;i++)
+            {
+                auxDatos=ll_get(listaEmpleados,i);
+                fwrite(auxDatos,sizeof(eEmpleado),1,archivo);
+            }
+            fclose(archivo);
+            printf("\nSe han guardado los datos\n");
+            sePudo=1;
+        }
+    }
+    return sePudo;
+}
+int empleado_cargarDatosModoBinario(FILE* archivo,LinkedList* listaEmpleados,int* contAltas)
+{
+    int sePudo=-1;
+    eEmpleado* auxDatos;
+    {
+        archivo=fopen("datos_binario","rb");
+        if(archivo!=NULL)
+        {
+            fread(contAltas,sizeof(int),1,archivo);
+            ll_clear(listaEmpleados);
+            while(!feof(archivo))
+            {
+                auxDatos=empleado_nuevoEmpleado();
+                if(auxDatos!=NULL)
+                {
+                    fread(auxDatos,sizeof(eEmpleado),1,archivo);
+                    if(feof(archivo))
+                    {
+                        break;
+                    }
+                    ll_add(listaEmpleados,auxDatos);
+                }
+            }
+            fclose(archivo);
+            printf("\nSe han cargado los datos\n");
+            sePudo=1;
+        }
+    }
+    return sePudo;
 }

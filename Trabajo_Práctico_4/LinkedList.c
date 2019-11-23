@@ -353,4 +353,23 @@ int ll_sort(LinkedList* lista, int (*pFunc)(void* ,void*), int order)
     }
     return returnAux;
 }
-
+LinkedList* ll_filter(LinkedList* lista,int (*fn)(void* pElement))
+{
+    LinkedList* nuevaLista=NULL;
+    void* auxElement=NULL;
+    int i;
+    int len=ll_len(lista);
+    if(lista!=NULL && fn!=NULL)
+    {
+        nuevaLista=ll_newLinkedList();
+        for(i=0;i<len;i++)
+        {
+            auxElement=ll_get(lista,i);
+            if(fn(auxElement))
+            {
+                ll_add(nuevaLista,auxElement);
+            }
+        }
+    }
+    return nuevaLista;
+}

@@ -132,6 +132,31 @@ int empleado_getSueldo(eEmpleado* empleado,float* sueldo);
  */
 eEmpleado* empleado_nuevoEmpleadoParametros(char* id,char* nombre,char* apellido,char* edad,char* sueldo);
 
+/** \brief Muestra los datos de un solo empleado
+ *
+ * \param unEmpleado eEmpleado* El puntero a un empleado
+ * \return int Si el puntero es nulo [0] si se mostraron los datos [1]
+ *
+ */
+int empleado_mostrarUnEmpleado(eEmpleado* unEmpleado);
+
+/** \brief Muestra la lista con todos los empleados
+ *
+ * \param listaEmpleados LinkedList* La lista de empleados
+ * \return void No retorna nada
+ *
+ */
+void empleado_mostrarListaEmpleados(LinkedList* listaEmpleados);
+
+/** \brief Busca el indice de un empleado por su id
+ *
+ * \param listaEmpleados LinkedList* La lista de empleados
+ * \param idABuscar int El id a buscar en la lista
+ * \return int Si lo encontro retorna el indice, si no lo encontro [-1]
+ *
+ */
+int empleado_buscarPorId(LinkedList* listaEmpleados,int idABuscar);
+
 /** \brief Recibe dos empleados y compara el id de ambos
  *
  * \param empleado1 void* El puntero del primer empleado
@@ -177,31 +202,6 @@ int empleado_compararPorEdad(void* empleado1,void* empleado2);
  */
 int empleado_compararPorSueldo(void* empleado1,void* empleado2);
 
-/** \brief Muestra los datos de un solo empleado
- *
- * \param unEmpleado eEmpleado* El puntero a un empleado
- * \return int Si el puntero es nulo [0] si se mostraron los datos [1]
- *
- */
-int empleado_mostrarUnEmpleado(eEmpleado* unEmpleado);
-
-/** \brief Muestra la lista con todos los empleados
- *
- * \param listaEmpleados LinkedList* La lista de empleados
- * \return void No retorna nada
- *
- */
-void empleado_mostrarListaEmpleados(LinkedList* listaEmpleados);
-
-/** \brief Busca el indice de un empleado por su id
- *
- * \param listaEmpleados LinkedList* La lista de empleados
- * \param idABuscar int El id a buscar en la lista
- * \return int Si lo encontro retorna el indice, si no lo encontro [-1]
- *
- */
-int empleado_buscarPorId(LinkedList* listaEmpleados,int idABuscar);
-
 /** \brief Da de alta a un nuevo empleado en la lista
  *
  * \param listaEmpleados LinkedList* La lista de empleados
@@ -236,6 +236,34 @@ int empleado_modificarDatos(LinkedList* listaEmpleados);
  */
 void empleado_pedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontrado);
 
+/** \brief Pregunta en un menu de opciones de que forma se desean ordenar los datos
+ *
+ * \param listaEmpleados LinkedList* La lista de empleados
+ * \return void No retorna nada
+ *
+ */
+void empleado_ordenarEmpleados(LinkedList* listaEmpleados);
+
+/** \brief Guarda los datos de los empleados en modo texto
+ *
+ * \param archivo FILE* El archivo en donde guardar los datos
+ * \param listaEmpleados LinkedList* La lista de empleados
+ * \param contAltas int* El contador de altas a guardar en la segunda posicion del archivo
+ * \return int Si se pudo guardar los datos [1] si no [-1]
+ *
+ */
+int empleado_guardarDatosModoTexto(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
+
+/** \brief Carga los datos de los empleados que fueron guardados en modo texto
+ *
+ * \param archivo FILE* El archivo en donde se guardaron los datos
+ * \param listaEmpleados LinkedList* La lista de empleados
+ * \param contAltas int* El contador de altas a obtener desde la segunda posicion del archivo
+ * \return int Si se pudo cargar los datos [1] si no [-1]
+ *
+ */
+int empleado_cargarDatosModoTexto(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
+
 /** \brief Guarda los datos de los empleados en modo binario
  *
  * \param archivo FILE* El archivo en donde guardar los datos
@@ -244,7 +272,7 @@ void empleado_pedirDatosAModificar(LinkedList* listaEmpleados,int indiceEncontra
  * \return int Si se pudo guardar los datos [1] si no [-1]
  *
  */
-int empleado_guardarDatos(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
+int empleado_guardarDatosModoBinario(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
 
 /** \brief Carga los datos de los empleados que fueron guardados en modo binario
  *
@@ -254,13 +282,5 @@ int empleado_guardarDatos(FILE* archivo,LinkedList* listaEmpleados,int* contAlta
  * \return int Si se pudo cargar los datos [1] si no [-1]
  *
  */
-int empleado_cargarDatos(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
-
-/** \brief Pregunta en un menu de opciones de que forma se desean ordenar los datos
- *
- * \param listaEmpleados LinkedList* La lista de empleados
- * \return void No retorna nada
- *
- */
-void empleado_ordenarEmpleados(LinkedList* listaEmpleados);
+int empleado_cargarDatosModoBinario(FILE* archivo,LinkedList* listaEmpleados,int* contAltas);
 #endif // EMPLEADO_H_INCLUDED

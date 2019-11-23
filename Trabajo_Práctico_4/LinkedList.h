@@ -181,4 +181,12 @@ LinkedList* ll_clone(LinkedList* lista);
                                 ( 0) Si ok
  */
 int ll_sort(LinkedList* lista, int (*pFunc)(void* ,void*), int order);
+
+/** \brief Crea una nueva lista con los elementos que se filtraron
+ *
+ * \param pElement void* El elemento a filtrar
+ * \return LinkedList* Una nueva lista con los datos que fueron filtrados
+ *
+ */
+LinkedList* ll_filter(LinkedList* lista,int (*fn)(void* pElement));
 #endif

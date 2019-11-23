@@ -135,3 +135,37 @@
 1573568969 source:c:\users\alumno\desktop\tp_laboratorio_1\trabajo_práctico_4\validaciones.c
 	"Validaciones.h"
 
+1574543581 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\linkedlist.c
+	"LinkedList.h"
+
+1574543581 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\linkedlist.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1574544037 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Validaciones.h"
+	"Empleado.h"
+
+1574539785 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\validaciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1574543371 c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\empleado.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Validaciones.h"
+	"LinkedList.h"
+
+1574539785 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\validaciones.c
+	"Validaciones.h"
+
+1574543985 source:c:\users\acquisto\desktop\programacion y laboratorio\tp enunciados\tp_laboratorio_1\trabajo_práctico_4\empleado.c
+	"Empleado.h"
+
